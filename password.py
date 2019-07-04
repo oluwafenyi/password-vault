@@ -36,7 +36,7 @@ def get(command):
         print(f"Password copied to clipboard for account: {account}")
 
     elif len(command) == 1:
-        print("Accounts with passwords saved are:" +
+        print("Accounts with passwords saved are: " +
               "\n".join(get_all_accounts()))
 
 

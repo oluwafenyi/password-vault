@@ -29,7 +29,7 @@ def get_all_accounts():
     with conn:
         c = conn.cursor()
         c.execute("SELECT * FROM passwords")
-        return [item[1] for item in c.fetchall()]
+        return [item[1] for item in c.fetchall()][1:]
 
 
 def save_password(account, password):
