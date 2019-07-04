@@ -7,7 +7,7 @@ from sqlite3 import Error
 # generate account
 # account
 # delete
-
+# password
 
 if __name__ == "__main__":
     try:
@@ -22,6 +22,7 @@ if __name__ == "__main__":
         "account": password.get,
         "accounts": password.get,
         "delete": password.delete,
+        "save": password.save
     }
 
     event = switcher.get(command[0], "error")

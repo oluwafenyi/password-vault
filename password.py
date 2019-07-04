@@ -53,3 +53,15 @@ def delete(command):
                          "(y/n): ")
         if response.lower() == "y":
             delete_all_accounts()
+
+
+def save(command):
+    if len(command) > 2:
+        account = command[1]
+        password = command[2]
+        if not query_db(account):
+            save_password(account, password)
+            print(f"Password saved for {account}")
+
+    else:
+        raise Exception("You must add specify a password")
