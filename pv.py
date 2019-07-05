@@ -19,6 +19,7 @@ def auth():
 
 # todo: implement help system
 
+
 if __name__ == "__main__":
     try:
         query_db("master")
