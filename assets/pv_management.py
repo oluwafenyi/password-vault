@@ -1,7 +1,10 @@
 import sqlite3
+import os
 
+path = os.path.join(os.getenv("APPDATA"), "pvault.db")
+# get at me if you use other platforms apart from Windows
 
-conn = sqlite3.connect("./passwords.db")
+conn = sqlite3.connect(path)
 
 
 def create_database():

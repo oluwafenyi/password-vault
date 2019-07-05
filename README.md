@@ -2,7 +2,7 @@
 A script that manages and generates passwords from the command line, passwords are stored in a sqlite db.
 ***
 #### How to Install
-`pip install pvault==1.0.7a0`
+`pip install pvault==1.0.8a0`
 
 #### Basic Usage
 
