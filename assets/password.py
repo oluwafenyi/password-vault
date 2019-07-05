@@ -92,3 +92,13 @@ def save(command):
             update_password(account, password)
             pyperclip.copy(password)
             print(f"Password updated for '{account}'!")
+
+
+def set_master_password():
+    password = False
+    again = True
+    while again != password:
+        password = getpass("Enter new master password: ")
+        again = getpass("Enter new master password again: ")
+    update_password("master", password)
+    print("Master password set.")

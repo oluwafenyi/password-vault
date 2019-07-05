@@ -15,7 +15,7 @@ def create_database():
                 );
             """
         c.execute(cmd)
-        save_password("first", "hash")
+        save_password("master", "hash")
 
 
 def query_db(account):
