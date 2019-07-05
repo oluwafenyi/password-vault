@@ -1,7 +1,7 @@
 import sqlite3
 
 
-conn = sqlite3.connect("./password.db")
+conn = sqlite3.connect("./passwords.db")
 
 
 def create_database():

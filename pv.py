@@ -1,6 +1,6 @@
 import sys
-import password
-from management import create_database, query_db
+import assets.password as password
+from assets.management import create_database, query_db
 from sqlite3 import Error
 
 
@@ -9,6 +9,10 @@ from sqlite3 import Error
 # delete
 # password
 
+# todo: master password system
+# todo: hide passwords entered on the command line
+# todo: implement help system
+
 if __name__ == "__main__":
     try:
         query_db("first")
@@ -16,6 +20,8 @@ if __name__ == "__main__":
         create_database()
 
     command = sys.argv[1:]
+    if not command:
+        raise Exception("pv.py help for available commands")
 
     switcher = {
         "generate": password.generate,
