@@ -1,6 +1,6 @@
 import pyperclip
 from getpass import getpass
-from .management import (
+from pv_management import (
     save_password,
     query_db,
     update_password,
@@ -8,7 +8,7 @@ from .management import (
     get_all_accounts,
     delete_all_accounts
 )
-from .generate import generate_password
+from pv_generate import generate_password
 
 
 def confirmation(account, action):
@@ -75,7 +75,7 @@ def delete(command):
             print(f"'{account}' deleted.")
 
     elif len(command) == 1:
-        if confirmation(account, "da"):
+        if confirmation("all", "da"):
             delete_all_accounts()
             print("All accounts deleted.")
 

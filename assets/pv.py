@@ -1,6 +1,7 @@
+#!/usr/bin/env python
 import sys
-import assets.password as password
-from assets.management import create_database, query_db
+import pv_password as password
+from pv_management import create_database, query_db
 from sqlite3 import Error
 from getpass import getpass
 
