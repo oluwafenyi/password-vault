@@ -63,8 +63,12 @@ def get(command):
         print(f"Password copied to clipboard for '{account}'!")
 
     elif len(command) == 1:
-        print("Accounts with passwords saved are:\n" +
-              "\n".join(get_all_accounts()))
+        accounts = get_all_accounts()
+        if len(accounts) > 0:
+            print("Accounts with passwords saved are:\n" +
+                  "\n".join(accounts))
+        else:
+            print("No accounts saved.")
 
 
 def delete(command):
@@ -81,17 +85,20 @@ def delete(command):
 
 
 def save(command):
-    account = command[1]
-    password = getpass(f"Enter password for '{account}': ")
-    if not query_db(account):
-        save_password(account, password)
-        pyperclip.copy(password)
-        print(f"Password saved for '{account}'!")
-    else:
-        if confirmation(account, "u"):
-            update_password(account, password)
+    if len(command) > 1:
+        account = command[1]
+        password = getpass(f"Enter password for '{account}': ")
+        if not query_db(account):
+            save_password(account, password)
             pyperclip.copy(password)
-            print(f"Password updated for '{account}'!")
+            print(f"Password saved for '{account}'!")
+        else:
+            if confirmation(account, "u"):
+                update_password(account, password)
+                pyperclip.copy(password)
+                print(f"Password updated for '{account}'!")
+    else:
+        print("Account name required.")
 
 
 def set_master_password():

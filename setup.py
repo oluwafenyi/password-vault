@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pvault",
-    version="1.0.8a",
+    version="1.0.9a",
     author="oluwafenyi",
     author_email="o.enyioma@gmail.com",
     description="A password manager package",

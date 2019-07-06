@@ -72,4 +72,7 @@ def delete_account(account):
 def delete_all_accounts():
     with conn:
         c = conn.cursor()
+        password = query_db("master")[2]
         c.execute("DELETE FROM passwords")
+        create_database()
+        update_password("master", password)
