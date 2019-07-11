@@ -13,10 +13,6 @@ def auth():
     else:
         print("Invalid password")
 
-# generate account
-# account
-# delete
-# password
 
 # todo: implement help system
 

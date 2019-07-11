@@ -1,9 +1,8 @@
 import sqlite3
 import os
 
-path = os.path.join(os.getenv("APPDATA"), "pvault.db")
-# get at me if you use other platforms apart from Windows
 
+path = os.path.join(os.getenv("APPDATA"), "pvault.db")
 conn = sqlite3.connect(path)
 
 
