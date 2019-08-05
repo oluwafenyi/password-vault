@@ -1,24 +1,23 @@
 #!/usr/bin/env python
 import sys
+import os
 
-import handler
-from db import PVaultDB
-from auth import auth
-
-
-db = PVaultDB()
+from . import handler
+from .db import PVaultDB
+from .auth import auth
 
 
-if __name__ == "__main__":
+def main():
+    db = PVaultDB()
 
     try:
         if sys.argv[1] == "help":
             handler.help_me(sys.argv[1], db)
-            sys.exit()
+            os._exit(1)
 
         elif sys.argv[1] == "generate" and len(sys.argv) == 2:
-            handler.generate(sys.argv[1:], db)
-            sys.exit()
+            handler.generate(sys.argv[1:], db, None)
+            os._exit(1)
 
         authenticated = None
 

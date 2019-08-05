@@ -1,6 +1,6 @@
 from getpass import getpass
 
-from db import PVaultDB
+from .db import PVaultDB
 
 
 def auth(db: PVaultDB):

@@ -3,8 +3,8 @@ import os
 
 from pyAesCrypt import encryptFile, decryptFile
 
-from config import __dbPath__, __dbName__
-from crypto import encrypt_password
+from .config import __dbPath__, __dbName__
+from .crypto import encrypt_password
 
 
 class EncryptionError(PermissionError):

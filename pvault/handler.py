@@ -1,20 +1,20 @@
 import pyperclip
 from getpass import getpass
 
-from generator import generate_password
-from crypto import decrypt_password
+from .generator import generate_password
+from .crypto import decrypt_password
 
 
 def confirmation(account, action):
     if action == "r":
         response = input("Are you sure you want to regenerate password for"
-                         f" '{account}' (y/n): ")
+                         " '{}' (y/n): ".format(account))
     elif action == "d":
         response = input("Are you sure you want to delete password for"
-                         f" '{account}' (y/n): ")
+                         " '{}' (y/n): ".format(account))
     elif action == "u":
         response = input("Are you sure you want to update password for"
-                         f" '{account}' (y/n): ")
+                         " '{}' (y/n): ".format(account))
     elif action == "da":
         response = input("Are you sure you want to delete all saved passwords "
                          "(y/n): ")
@@ -23,11 +23,11 @@ def confirmation(account, action):
 
 def confirmation_message(account, action):
     if action == "g":
-        print(f"Password generated for account: '{account}'"
+        print("Password generated for account: '{}'".format(account) +
               "\nCopied to clipboard!")
 
     if action == "r":
-        print(f"Password regenerated for account: '{account}''"
+        print("Password regenerated for account: '{}''".format(account) +
               "\nCopied to clipboard!")
 
 
@@ -55,7 +55,7 @@ def get(command, db, auth):
         password = db.query(account)[2]
         password = decrypt_password(password, auth)
         pyperclip.copy(password)
-        print(f"Password copied to clipboard for '{account}'!")
+        print("Password copied to clipboard for '{}'!".format(account))
 
     elif len(command) == 1:
         accounts = db.get_all_accounts()
@@ -71,7 +71,7 @@ def delete(command, db, auth):
         account = command[1]
         if confirmation(account, "d"):
             db.delete_account(account)
-            print(f"'{account}' deleted.")
+            print("'{}' deleted.".format(account))
 
     elif len(command) == 1:
         if confirmation("all", "da"):
@@ -82,27 +82,30 @@ def delete(command, db, auth):
 def save(command, db, auth):
     if len(command) > 1:
         account = command[1]
-        password = getpass(f"Enter password for '{account}': ")
+        password = getpass("Enter password for '{}': ".format(account))
         if not db.query(account):
             db.save_password(account, password, auth)
             pyperclip.copy(password)
-            print(f"Password saved for '{account}'!")
+            print("Password saved for '{}'!".format(account))
         else:
             if confirmation(account, "u"):
                 db.update_password(account, password, auth)
                 pyperclip.copy(password)
-                print(f"Password updated for '{account}'!")
+                print("Password updated for '{}'!".format(account))
     else:
         print("Account name required.")
 
 
 def help_me(command, db):
-    import os
-    base = (os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    with open(os.path.join(base, 'README.md')) as readme:
-        lines = readme.readlines()
-        title = list(filter(lambda line: 'basic usage' in line.lower(), lines))
-        title_index = lines.index(title[0])
-        for line in lines[title_index::]:
-            if not line.isspace():
-                print(line)
+    messages = [
+        "usage: pv [command]",
+        "A python CLI based password manager",
+        "generate  generates a random password to your clipboard",
+        "          [accountname] sets a unique identifier for your password and save; overwrites if exists",
+        "accounts  shows all saved passwords",
+        "account   [accountname] shows the password of a particular user only",
+        "save      [accountname] awaits password input and binds to accountname",
+        "delete    delete all passwords in the database",
+        "          [accountname] delete only this user in the database"
+    ]
+    for message in messages: print(message)

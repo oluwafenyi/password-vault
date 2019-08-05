@@ -1,1 +1,3 @@
+cryptography==2.7
+pyAesCrypt==0.4.3
 pyperclip==1.7.0
