@@ -1,14 +1,8 @@
 import pyperclip
 from getpass import getpass
-from pv_management import (
-    save_password,
-    query_db,
-    update_password,
-    delete_account,
-    get_all_accounts,
-    delete_all_accounts
-)
-from pv_generate import generate_password
+
+from generator import generate_password
+from crypto import decrypt_password
 
 
 def confirmation(account, action):
@@ -37,17 +31,17 @@ def confirmation_message(account, action):
               "\nCopied to clipboard!")
 
 
-def generate(command):
+def generate(command, db, auth):
     if len(command) > 1:
         account = command[1]
         password = generate_password()
-        if not query_db(account):
-            save_password(account, password)
+        if not db.query(account):
+            db.save_password(account, password, auth)
             pyperclip.copy(password)
             confirmation_message(account, "g")
         else:
             if confirmation(account, "r"):
-                update_password(account, password)
+                db.update_password(account, password, auth)
                 pyperclip.copy(password)
                 confirmation_message(account, "r")
     else:
@@ -55,15 +49,16 @@ def generate(command):
         print("Random password copied to clipboard!")
 
 
-def get(command):
+def get(command, db, auth):
     if len(command) > 1:
         account = command[1]
-        password = query_db(account)[2]
+        password = db.query(account)[2]
+        password = decrypt_password(password, auth)
         pyperclip.copy(password)
         print(f"Password copied to clipboard for '{account}'!")
 
     elif len(command) == 1:
-        accounts = get_all_accounts()
+        accounts = db.get_all_accounts()
         if len(accounts) > 0:
             print("Accounts with passwords saved are:\n" +
                   "\n".join(accounts))
@@ -71,41 +66,43 @@ def get(command):
             print("No accounts saved.")
 
 
-def delete(command):
+def delete(command, db, auth):
     if len(command) > 1:
         account = command[1]
         if confirmation(account, "d"):
-            delete_account(account)
+            db.delete_account(account)
             print(f"'{account}' deleted.")
 
     elif len(command) == 1:
         if confirmation("all", "da"):
-            delete_all_accounts()
+            db.delete_all_accounts()
             print("All accounts deleted.")
 
 
-def save(command):
+def save(command, db, auth):
     if len(command) > 1:
         account = command[1]
         password = getpass(f"Enter password for '{account}': ")
-        if not query_db(account):
-            save_password(account, password)
+        if not db.query(account):
+            db.save_password(account, password, auth)
             pyperclip.copy(password)
             print(f"Password saved for '{account}'!")
         else:
             if confirmation(account, "u"):
-                update_password(account, password)
+                db.update_password(account, password, auth)
                 pyperclip.copy(password)
                 print(f"Password updated for '{account}'!")
     else:
         print("Account name required.")
 
 
-def set_master_password():
-    password = False
-    again = True
-    while again != password:
-        password = getpass("Enter new master password: ")
-        again = getpass("Enter new master password again: ")
-    update_password("master", password)
-    print("Master password set.")
+def help_me(command, db):
+    import os
+    base = (os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    with open(os.path.join(base, 'README.md')) as readme:
+        lines = readme.readlines()
+        title = list(filter(lambda line: 'basic usage' in line.lower(), lines))
+        title_index = lines.index(title[0])
+        for line in lines[title_index::]:
+            if not line.isspace():
+                print(line)

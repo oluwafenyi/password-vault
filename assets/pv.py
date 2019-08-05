@@ -1,45 +1,56 @@
 #!/usr/bin/env python
 import sys
-import pv_password as password
-from pv_management import create_database, query_db
-from sqlite3 import Error
-from getpass import getpass
+
+import handler
+from db import PVaultDB
+from auth import auth
 
 
-def auth():
-    p = getpass("Enter master password: ")
-    if p == query_db("master")[2]:
-        return True
-    else:
-        print("Invalid password")
-
-
-# todo: implement help system
+db = PVaultDB()
 
 
 if __name__ == "__main__":
+
     try:
-        query_db("master")
-    except Error:
-        create_database()
-        password.set_master_password()
+        if sys.argv[1] == "help":
+            handler.help_me(sys.argv[1], db)
+            sys.exit()
 
-    if auth():
-        command = sys.argv[1:]
-        if not command:
-            raise Exception("pv.py help for available commands")
+        elif sys.argv[1] == "generate" and len(sys.argv) == 2:
+            handler.generate(sys.argv[1:], db)
+            sys.exit()
 
-        switcher = {
-            "generate": password.generate,
-            "account": password.get,
-            "accounts": password.get,
-            "delete": password.delete,
-            "save": password.save
-        }
+        authenticated = None
 
-        event = switcher.get(command[0], "error")
+        try:
+            authenticated = auth(db)
+        except ValueError:
+            print("Wrong Password")  # or db is corrupt
 
-        if not isinstance(event, str):
-            event(command)
-        else:
-            raise Exception("Invalid argument")
+        if authenticated:
+            command = sys.argv[1:]
+            if not command:
+                print("Invalid Argument\n\n\n")
+                handler.help_me(None, db)
+
+            switcher = {
+                "generate": handler.generate,
+                "account": handler.get,
+                "accounts": handler.get,
+                "delete": handler.delete,
+                "save": handler.save,
+            }
+
+            event = switcher.get(command[0], "error")
+
+            if not isinstance(event, str):
+                event(command, db, authenticated)
+            else:
+                print("Invalid Argument\n\n\n")
+                handler.help_me(None, db)
+
+        db.encrypt(authenticated)
+
+    except:
+        print("An error has occurred.")
+        db.encrypt(authenticated)
