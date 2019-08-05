@@ -48,7 +48,7 @@ def main():
                 print("Invalid Argument\n\n\n")
                 handler.help_me(None, db)
 
-        db.encrypt(authenticated)
+            db.encrypt(authenticated)
 
     except:
         print("An error has occurred.")

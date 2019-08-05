@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pvault",
-    version="1.1.2a",
+    version="1.1.3a",
     author="oluwafenyi",
     author_email="o.enyioma@gmail.com",
     description="A password manager package",
@@ -35,6 +35,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: Microsoft :: Windows",
+        "Operating System :: POSIX :: Linux"
     ],
     install_requires=requirements
 )

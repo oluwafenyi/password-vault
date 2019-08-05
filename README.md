@@ -1,8 +1,8 @@
 ## password-vault - pv.py
-A windows only script that manages and generates passwords from the command line, passwords are stored in a sqlite db.
+A CLI script that manages and generates passwords from the command line, passwords are stored in an encrypted sqlite db.
 ***
 #### How to Install
-`pip install pvault==1.1.1a0`
+`pip install pvault`
 
 #### Basic Usage
 
